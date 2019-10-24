@@ -8,6 +8,7 @@
     "aye-aye-api": "file:..",
     "braces": "^3.0.2",
     "js-yaml": "^3.13.1",
+    "mem": "^5.1.1",
     "os-locale": "^4.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
