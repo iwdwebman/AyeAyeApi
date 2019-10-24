@@ -5,11 +5,14 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "aye-aye-api": "file:..",
+    "braces": "^3.0.2",
+    "js-yaml": "^3.13.1",
+    "os-locale": "^4.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "^1.1.4",
-    "aye-aye-api": "file:.."
+    "react-scripts": "^1.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -18,6 +21,8 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "eslint": "^6.5.1"
+    "eslint": "^6.5.1",
+    "eslint-loader": "^3.0.2",
+    "webpack-dev-server": "3.9.0"
   }
 }
