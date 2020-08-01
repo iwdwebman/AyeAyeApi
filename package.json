@@ -1,10 +1,13 @@
 {
-   "name": "aye-aye-api",
-   "version": "0.1.0",
+   "name": "@starrsoftware/aye-aye-api",
+   "version": "0.1.1",
    "description": "API Management that allows easy logging and start and stop functions useful for loading screens",
-   "author": "iwdwebman",
+   "author": "starrsoftware",
    "license": "MIT",
-   "repository": "iwdwebman/ayeayeapi",
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/iwdwebman/ayeayeapi.git"
+   },
    "main": "dist/index.js",
    "module": "dist/index.modern.js",
    "source": "src/index.js",
@@ -39,5 +42,10 @@
    },
    "files": [
       "dist"
-   ]
+   ],
+   "bugs": {
+      "url": "https://github.com/starrsoftware/ayeayeapi/issues"
+   },
+   "homepage": "https://github.com/starrsoftware/ayeayeapi#readme",
+   "dependencies": {}
 }
