@@ -1,29 +1,30 @@
 {
-  "name": "aye-aye-api-example",
-  "homepage": "https://@iwdwebman.github.io/aye-aye-api",
+  "name": "ayeayeapi-example",
+  "homepage": ".",
   "version": "0.0.0",
-  "license": "MIT",
   "private": true,
-  "dependencies": {
-    "aye-aye-api": "file:..",
-    "braces": "^3.0.2",
-    "js-yaml": "^3.13.1",
-    "mem": "^5.1.1",
-    "os-locale": "^4.0.0",
-    "prop-types": "^15.6.2",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-scripts": "^1.1.4"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "node ../node_modules/react-scripts/bin/react-scripts.js start",
+    "build": "node ../node_modules/react-scripts/bin/react-scripts.js build",
+    "test": "node ../node_modules/react-scripts/bin/react-scripts.js test",
+    "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject"
+  },
+  "dependencies": {
+    "react": "file:../node_modules/react",
+    "react-dom": "file:../node_modules/react-dom",
+    "react-scripts": "file:../node_modules/react-scripts",
+    "ayeayeapi": "file:.."
   },
   "devDependencies": {
-    "eslint": "^6.5.1",
-    "eslint-loader": "^3.0.2",
-    "webpack-dev-server": "3.9.0"
-  }
+    "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

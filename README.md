@@ -1,26 +1,26 @@
-# aye-aye-api
+# ayeayeapi
 
-> RAML middleware to interface between API and UI layers. Allows for easy validation and configuration when layers do not agree on schemas.
+> API Management that allows easy logging and start and stop functions useful for loading screens
 
-[![NPM](https://img.shields.io/npm/v/aye-aye-api.svg)](https://www.npmjs.com/package/aye-aye-api) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![CodeFactor](https://www.codefactor.io/repository/github/iwdwebman/ayeayeapi/badge/master)](https://www.codefactor.io/repository/github/iwdwebman/ayeayeapi/overview/master)
+[![NPM](https://img.shields.io/npm/v/ayeayeapi.svg)](https://www.npmjs.com/package/ayeayeapi) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save aye-aye-api
+npm install --save ayeayeapi
 ```
 
 ## Usage
 
 ```jsx
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import MyComponent from 'aye-aye-api';
+import MyComponent from 'ayeayeapi'
+import 'ayeayeapi/dist/index.css'
 
 class Example extends Component {
   render() {
-    return <MyComponent />;
+    return <MyComponent />
   }
 }
 ```
