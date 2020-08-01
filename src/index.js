@@ -21,6 +21,13 @@ let DefaultLogLevels = {
   "4xx": ERROR
 }
 
+let Loggers = {
+  [LOG_LEVELS.DEBUG]: (error) => { console.debug(error); },
+  [LOG_LEVELS.INFO]: (error) => { console.info(error); },
+  [LOG_LEVELS.WARNING]: (error) => { console.warn(error); },
+  [LOG_LEVELS.ERROR]: (error) => { console.error(error); }
+}
+
 export const SetDefaultProperties = ({startFunction, endFunction, statusFunction}) => {
   DefaultProperties.StartFunction = startFunction || DefaultProperties.StartFunction;
   DefaultProperties.EndFunction = endFunction || DefaultProperties.EndFunction;
