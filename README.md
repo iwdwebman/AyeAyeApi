@@ -16,7 +16,6 @@ npm install --save ayeayeapi
 import React, { Component } from 'react'
 
 import MyComponent from 'ayeayeapi'
-import 'ayeayeapi/dist/index.css'
 
 class Example extends Component {
   render() {
