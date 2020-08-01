@@ -1,9 +1,9 @@
 import axios from "axios";
 
 let DefaultProperties = {
-  StartFunction = () => {},
-  EndFunction = () => {},
-  StatusFunction = () => {}
+  StartFunction: () => {},
+  EndFunction: () => {},
+  StatusFunction: () => {}
 }
 
 export const LOG_LEVELS = {
