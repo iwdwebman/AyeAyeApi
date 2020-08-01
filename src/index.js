@@ -275,10 +275,52 @@ export const GetCacheValue = (cacheLocation, key, duration) => {
    return undefined;
 };
 
-const SetStorageCache = (storage, key, data) => {
+const SetStorageCache = (location, storage, key, data) => {
    if (storage) {
+      let currentCacheSize = Object.keys(storage)
+         .filter((key) => key.startsWith('AyeAye'))
+         .map((key) => key.length + (storage[key] || '').length)
+         .reduce(a, (b) => a + b);
+      let dataSize = GetObjectSize(data);
+
+      if (currentCacheSize + dataSize >= CACHE_MAX_SIZE[location]) {
+         Log(LOG_LEVELS.INFO, 'Cache Size Limit Reached');
+         return;
+      }
+
       storage.setItem(key, JSON.stringify(data));
    }
+};
+
+const GetObjectSize = (obj) => {
+   if (obj !== null && obj !== undefined) {
+      switch (typeof obj) {
+         case 'number':
+            return 8;
+         case 'string':
+            return obj.length * 2;
+         case 'boolean':
+            return 4;
+         case 'object':
+            var objClass = Object.prototype.toString.call(obj).slice(8, -1);
+            if (objClass === 'Object' || objClass === 'Array') {
+               let objectSize = 0;
+               for (var key in obj) {
+                  if (!obj.hasOwnProperty(key)) {
+                     continue;
+                  }
+
+                  objectSize += GetObjectSize(obj[key]);
+               }
+               return objectSize;
+            }
+            return obj.toString().length * 2;
+         default:
+            return 0;
+      }
+   }
+
+   return 0;
 };
 
 export const SetCacheValue = (cacheLocation, key, duration, data) => {
@@ -288,23 +330,41 @@ export const SetCacheValue = (cacheLocation, key, duration, data) => {
       duration <= 0 ||
       key.length <= 0
    ) {
-      return false;
+      return;
    }
 
    const cacheData = GetCacheStandardObject(data);
 
-   //TODO: Get the size of currently stored data and what we have right here to make sure we are still less than the max
-   //CACHE_MAX_SIZE
-
    switch (cacheLocation) {
       case CACHE_LOCATIONS.MEMORY:
+         let currentCacheSize = GetObjectSize(MemoryCache);
+         let dataSize = GetObjectSize(data);
+
+         if (
+            currentCacheSize + dataSize >=
+            CACHE_MAX_SIZE[CACHE_LOCATIONS.MEMORY]
+         ) {
+            Log(LOG_LEVELS.INFO, 'Cache Size Limit Reached');
+            return;
+         }
+
          MemoryCache[key] = cacheData;
          break;
       case CACHE_LOCATIONS.LOCAL_STORAGE:
-         SetStorageCache(widow.localStorage, key, cacheData);
+         SetStorageCache(
+            CACHE_LOCATIONS.LOCAL_STORAGE,
+            widow.localStorage,
+            key,
+            cacheData
+         );
          break;
       case CACHE_LOCATIONS.SESSION_STORAGE:
-         SetStorageCache(widow.sessionStorage, key, cacheData);
+         SetStorageCache(
+            CACHE_LOCATIONS.SESSION_STORAGE,
+            widow.sessionStorage,
+            key,
+            cacheData
+         );
          break;
    }
 };
