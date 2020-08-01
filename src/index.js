@@ -5,7 +5,18 @@ const NEW_LINE = '\n';
 let DefaultProperties = {
    StartFunction: () => {},
    EndFunction: () => {},
-   StatusFunction: () => {}
+   StatusFunction: (succedded, failed, total) => {
+      Log(
+         LOG_LEVELS.INFO,
+         failed > 0
+            ? `Failed to load ${failed} API's out of ${total}${
+                 succedded + failed < total
+                    ? `. Still loading ${total - (succedded + failed)} more.`
+                    : ''
+              }`
+            : `Loading ${total} APIs. Completed ${succedded} so far.`
+      );
+   }
 };
 
 export const LOG_LEVELS = {
@@ -425,6 +436,8 @@ const Call = async ({
          }
       }
 
+      DefaultProperties.StartFunction();
+
       //TODO: Need to handle mulitple calls
       let response = axios({
          url,
@@ -433,6 +446,8 @@ const Call = async ({
          ...other,
          ...Config
       });
+
+      DefaultProperties.EndFunction();
 
       if (!response) {
          Log(LOG_LEVELS.ERROR, message, url, methodString, data);
