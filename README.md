@@ -7,20 +7,19 @@
 ## Install
 
 ```bash
-npm install --save ayeayeapi
+npm install --save aye-aye-api
 ```
 
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
-
-import MyComponent from 'ayeayeapi'
+import React, { Component } from 'react';
+import { Call } from 'aye-aye-api';
 
 class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
+   render() {
+      return <MyComponent />;
+   }
 }
 ```
 
