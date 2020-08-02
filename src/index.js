@@ -26,6 +26,8 @@ export const LOG_LEVELS = {
    ERROR: 4
 };
 
+const LogLevelMaxForSucceed = LOG_LEVELS.INFO;
+
 export const LOG_LEVEL_TEXT = {
    [LOG_LEVELS.DEBUG]: 'Debug',
    [LOG_LEVELS.INFO]: 'Info',
@@ -39,8 +41,6 @@ export const CACHE_LOCATIONS = {
    SESSION_STORAGE: 2,
    MEMORY: 3
 };
-
-const LogLevelMaxForSucceed = LOG_LEVELS.INFO;
 
 let LogLevels = {
    '1xx': LOG_LEVELS.DEBUG,
@@ -498,7 +498,6 @@ const callSingle = async (callData) => {
          }
       }
 
-      //TODO: Need to handle mulitple calls
       let response = await axios({
          url,
          data,
