@@ -1,6 +1,6 @@
 {
    "name": "@starrsoftware/aye-aye-api",
-   "version": "0.1.1",
+   "version": "0.2.0",
    "description": "API Management that allows easy logging and start and stop functions useful for loading screens",
    "author": "starrsoftware",
    "license": "MIT",

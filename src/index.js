@@ -3,9 +3,9 @@ import axios from 'axios';
 const NEW_LINE = '\n';
 
 let DefaultProperties = {
-   StartFunction: () => {},
-   EndFunction: () => {},
-   StatusFunction: (succedded, failed, total) => {
+   startFunction: () => {},
+   endFunction: () => {},
+   statusFunction: (succedded, failed, total) => {
       Log(
          LOG_LEVELS.INFO,
          failed > 0
@@ -112,11 +112,11 @@ export const SetDefaultProperties = ({
    endFunction,
    statusFunction
 }) => {
-   DefaultProperties.StartFunction =
-      startFunction || DefaultProperties.StartFunction;
-   DefaultProperties.EndFunction = endFunction || DefaultProperties.EndFunction;
-   DefaultProperties.StatusFunction =
-      statusFunction || DefaultProperties.StatusFunction;
+   DefaultProperties.startFunction =
+      startFunction || DefaultProperties.startFunction;
+   DefaultProperties.endFunction = endFunction || DefaultProperties.wndFunction;
+   DefaultProperties.statusFunction =
+      statusFunction || DefaultProperties.statusFunction;
 };
 
 export const SetLogLevels = (logLevels) => {
@@ -398,16 +398,78 @@ const Log = (logLevel, message, url, method, data) => {
    });
 };
 
-const Call = async ({
-   url,
-   data,
-   properties,
-   cacheLocation,
-   cacheDuration,
-   method,
-   ...other
-}) => {
-   return new Promise(function (resolve, reject) {
+const Call = async (callData, properties) => {
+   const isMulti = Array.isArray(callData);
+   const total = isMulti ? callData.length : 0;
+   let succedded = 0;
+   let failed = 0;
+
+   (properties && properties.startFunction
+      ? properties.startFunction
+      : DefaultProperties.startFunction)();
+
+   let callPromise;
+
+   if (Array.isArray(callData)) {
+      callPromise = callData.map(async (data) => {
+         return callSingle(data);
+      });
+   } else {
+      callPromise = callSingle(callData);
+   }
+
+   const endFunction =
+      properties && properties.endFunction
+         ? properties.endFunction
+         : DefaultProperties.endFunction;
+
+   const statusFunction =
+      properties && properties.statusFunction
+         ? properties.statusFunction
+         : DefaultProperties.statusFunction;
+
+   if (isMulti) {
+      statusFunction(succedded, failed, total);
+
+      callPromise.forEach(async (promise) =>
+         promise
+            .then(async () => {
+               succedded++;
+
+               if (succedded + failed >= total) {
+                  endFunction();
+               }
+
+               statusFunction(succedded, failed, total);
+            })
+            .catch(async () => {
+               failed++;
+
+               if (succedded + failed >= total) {
+                  endFunction();
+               }
+
+               statusFunction(succedded, failed, total);
+            })
+      );
+   } else {
+      callPromise.then(endFunction);
+   }
+
+   return callPromise;
+};
+
+const callSingle = async (callData) => {
+   const {
+      url,
+      data,
+      method,
+      cacheLocation,
+      cacheDuration,
+      ...other
+   } = callData;
+
+   return new Promise(async (resolve, reject) => {
       //Get the min cache curation
       const minCacheDuration = Math.min(
          CurrentCacheDuration || 0,
@@ -436,10 +498,8 @@ const Call = async ({
          }
       }
 
-      DefaultProperties.StartFunction();
-
       //TODO: Need to handle mulitple calls
-      let response = axios({
+      let response = await axios({
          url,
          data,
          methodString,
@@ -447,10 +507,14 @@ const Call = async ({
          ...Config
       });
 
-      DefaultProperties.EndFunction();
-
       if (!response) {
-         Log(LOG_LEVELS.ERROR, message, url, methodString, data);
+         Log(
+            LOG_LEVELS.ERROR,
+            'No Response, this is most unusual!',
+            url,
+            methodString,
+            data
+         );
          reject(response);
          return;
       }
@@ -464,7 +528,7 @@ const Call = async ({
          LOG_LEVELS.ERROR;
 
       //Log and Cache the response if applicable
-      Log(logLevel, message, url, methodString, data);
+      Log(logLevel, '', url, methodString, data);
       SetCacheValue(
          cacheLocationVerified,
          cacheKey,
