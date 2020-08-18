@@ -13,7 +13,7 @@ npm install --save @starrsoftware/aye-aye-api
 ## Single Call Usage
 
 ```jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Call from '@starrsoftware/aye-aye-api';
 
 export default function SingleCallExample(props) {
